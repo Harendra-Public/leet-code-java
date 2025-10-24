@@ -2,6 +2,7 @@ package com.leetcode.service;
 
 import com.leetcode.problems.FizzBuzz;
 import com.leetcode.problems.MiddleOfLinkeList;
+import com.leetcode.problems.RansomNote;
 import com.leetcode.problems.ReduceToZero;
 import com.leetcode.model.ProblemExecutionRequest;
 import com.leetcode.model.ProblemExecutionResponse;
@@ -56,7 +57,35 @@ public class ProblemExecutionService {
                         throw new IllegalArgumentException("Input must be a ListNodeInput or a map with 'values' for Middle of the Linked List");
                     }
                     break;
-                    
+                case 383:  // Ransom Note
+                    if (input instanceof java.util.Map) {
+                        java.util.Map<?,?> inputMap = (java.util.Map<?,?>) input;
+                        Object ransomNoteObj = inputMap.get("ransomNote");
+                        Object magazineObj = inputMap.get("magazine");
+                        
+                        // Validate both inputs are present
+                        if (ransomNoteObj == null || magazineObj == null) {
+                            throw new IllegalArgumentException("Both 'ransomNote' and 'magazine' must be provided");
+                        }
+                        
+                        // Validate input types
+                        if (!(ransomNoteObj instanceof String) || !(magazineObj instanceof String)) {
+                            throw new IllegalArgumentException("Both 'ransomNote' and 'magazine' must be strings");
+                        }
+                        
+                        // Convert and validate input contains only lowercase letters
+                        String ransomNote = (String) ransomNoteObj;
+                        String magazine = (String) magazineObj;
+                        if (!ransomNote.matches("[a-z]*") || !magazine.matches("[a-z]*")) {
+                            throw new IllegalArgumentException("Both strings must contain only lowercase letters");
+                        }
+                        
+                        RansomNote ransomNoteSolver = new RansomNote();
+                        result = ransomNoteSolver.canConstruct(ransomNote, magazine);
+                    } else {
+                        throw new IllegalArgumentException("Input must be a map containing 'ransomNote' and 'magazine' strings");
+                    }
+                    break;    
                 default:
                     throw new IllegalArgumentException("Problem ID not found: " + problemId);
             }
